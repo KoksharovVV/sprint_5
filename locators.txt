@@ -18,3 +18,6 @@
 
 Селекторы для поиска элементов на главной странице
 ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']"    # Поиск кнопки "Войти в аккаунт" или "Оформить заказ"
+".//span[text()='Соусы']/parent::div"   # Поиск раздела "Соусы"
+".//span[text()='Начинки']/parent::div" # Поиск раздела "Начинки"
+".//span[text()='Булки']/parent::div"   # Поиск раздела "Булки"

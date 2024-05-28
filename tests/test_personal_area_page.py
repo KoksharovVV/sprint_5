@@ -37,3 +37,23 @@ class TestPersonalAreaPage:
         driver.quit()
         assert text == "https://stellarburgers.nomoreparties.site/"
 
+    def test_exit(self):
+        driver = webdriver.Chrome()
+        driver.get("https://stellarburgers.nomoreparties.site/login")
+        # Заполнить поля для авторизации
+        driver.find_element(By.XPATH, ".//label[text()='Email']/parent::div/input").send_keys("koksharov_9555@mail.ru")
+        driver.find_element(By.XPATH, ".//input[@name='Пароль']").send_keys("123123")
+        driver.find_element(By.XPATH, ".//button[text()='Войти']").click()
+        WebDriverWait(driver, 3).until(
+            expected_conditions.presence_of_element_located((By.XPATH, ".//a[@href='/account']")))
+        # Перейти в личный кабинет
+        driver.find_element(By.XPATH, ".//a[@href='/account']").click()
+        # Жмем кнопку "Выход"
+        WebDriverWait(driver, 3).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, ".//button[text()='Выход']")))
+        driver.find_element(By.XPATH, ".//button[text()='Выход']").click()
+        WebDriverWait(driver, 3).until(
+            expected_conditions.element_to_be_clickable((By.XPATH, ".//button[text()='Войти']")))
+        url = driver.current_url
+        driver.quit()
+        assert url == 'https://stellarburgers.nomoreparties.site/login'
