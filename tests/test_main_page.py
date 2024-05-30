@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
-from time import sleep
+
 class TestMainPage:
     def test_transition_personal_area(self):
         driver = webdriver.Chrome()
@@ -35,7 +35,6 @@ class TestMainPage:
         driver.get("https://stellarburgers.nomoreparties.site/")
         # Нажать на раздел в конструкторе
         driver.find_element(By.XPATH, locator).click()
-        sleep(5)
         cls = driver.find_element(By.XPATH, locator).get_attribute("class")
         driver.quit()
         assert cls == 'tab_tab__1SPyG tab_tab_type_current__2BEPc pt-4 pr-10 pb-4 pl-10 noselect'
@@ -47,7 +46,6 @@ class TestMainPage:
         driver.find_element(By.XPATH, ".//span[text()='Соусы']/parent::div").click()
         # Перейти к разделу "Булки"
         driver.find_element(By.XPATH, ".//span[text()='Булки']/parent::div").click()
-        sleep(5)
         cls = driver.find_element(By.XPATH, ".//span[text()='Булки']/parent::div").get_attribute("class")
         driver.quit()
         assert cls == 'tab_tab__1SPyG tab_tab_type_current__2BEPc pt-4 pr-10 pb-4 pl-10 noselect'
