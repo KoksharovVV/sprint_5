@@ -1,15 +1,30 @@
 import pytest
+import json
 import random
-from selenium.webdriver.common.by import By
 from selenium import webdriver
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.chrome.service import Service
 
-@pytest.fixture()
-def random_login():
-    random_login = f'namesername{random.randint(0,9)}{random.randint(0,999)}@yandex.ru'
-    return random_login
-@pytest.fixture()
-def random_password():
-    random_password = str(random.randint(100000, 999999))
-    return random_password
+
+@pytest.fixture(scope='function')
+def driver():
+    options = webdriver.ChromeOptions()
+    service = Service(executable_path="/Users/vovak/chromedriver/chromedriver-win64/chromedriver.exe")
+    options.add_argument('--window-size=1920,1080')
+    driver = webdriver.Chrome(service=service, options=options)
+    yield driver
+    driver.quit()
+
+
+@pytest.fixture(scope='session')
+def data():
+    user = {}
+    user["login"] = f'namesername{random.randint(0, 9)}{random.randint(0, 999)}@yandex.ru'
+    user["password"] = str(random.randint(100000, 999999))
+    with open('random_login_details.json', 'w') as file:
+        json.dump(user, file)
+    with open('random_login_details.json', 'r') as file:
+        user = json.load(file)
+        data = {"login": user["login"],
+                "password": user["password"]}
+    return data
+

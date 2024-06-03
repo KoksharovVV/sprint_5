@@ -1,74 +1,48 @@
 import pytest
-from selenium.webdriver.common.by import By
-from selenium import webdriver
+from locators import TestLocators
+import data
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class TestAuthorizationPage:
-    @pytest.mark.parametrize("location_auth", [
-        ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_large__G21Vg']",
-        ".//a[@href='/account']"
+    @pytest.mark.parametrize("cond",[
+        TestLocators.BUTTON_PERSONAL_AREA,
+        TestLocators.BUTTON_LOGIN_ACCOUNT
     ])
-    def test_auth_via_main_page(self, location_auth):
-        driver = webdriver.Chrome()
+    def test_auth_via_main_page(self, driver, cond):
         driver.get("https://stellarburgers.nomoreparties.site/")
         # Перейти к авторизации
-        driver.find_element(By.XPATH, location_auth).click()
+        driver.find_element(*cond).click()
         # Заполнить поля для авторизации
-        driver.find_element(By.XPATH, ".//label[text()='Email']/parent::div/input").send_keys("koksharov_9555@mail.ru")
-        driver.find_element(By.XPATH, ".//input[@name='Пароль']").send_keys("123123")
-        driver.find_element(By.XPATH, ".//button[text()='Войти']").click()
-        WebDriverWait(driver, 3).until(
-            expected_conditions.presence_of_element_located((By.XPATH,
-                                                             ".//button[@class='button_button__33qZ0 "
-                                                             "button_button_type_primary__1O7Bx "
-                                                             "button_button_size_large__G21Vg']")))
-        text = driver.find_element(By.XPATH,
-                                   ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx "
-                                   "button_button_size_large__G21Vg']").text
-        driver.quit()
+        driver.find_element(*TestLocators.INPUT_EMAIL).send_keys(data.user_data['email'])
+        driver.find_element(*TestLocators.INPUT_PASSWORD).send_keys(data.user_data['password'])
+        driver.find_element(*TestLocators.BUTTON_SIGN_IN).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located(TestLocators.BUTTON_MAKE_AN_ORDER))
+        text = driver.find_element(*TestLocators.BUTTON_MAKE_AN_ORDER).text
         assert text == "Оформить заказ"
 
-    def test_auth_via_registration_form(self):
-        driver = webdriver.Chrome()
+    def test_auth_via_registration_form(self, driver):
         driver.get("https://stellarburgers.nomoreparties.site/register")
         # Нажать "Войти"
-        driver.find_element(By.XPATH, ".//a[@href='/login']").click()
+        driver.find_element(*TestLocators.BUTTON_SIGN_IN).click()
         # Заполнить поля для авторизации
-        driver.find_element(By.XPATH, ".//label[text()='Email']/parent::div/input").send_keys("koksharov_9555@mail.ru")
-        driver.find_element(By.XPATH, ".//input[@name='Пароль']").send_keys("123123")
-        driver.find_element(By.XPATH, ".//button[text()='Войти']").click()
-        WebDriverWait(driver, 3).until(
-            expected_conditions.presence_of_element_located((By.XPATH,
-                                                             ".//button[@class='button_button__33qZ0 "
-                                                             "button_button_type_primary__1O7Bx "
-                                                             "button_button_size_large__G21Vg']")))
-        text = driver.find_element(By.XPATH,
-                                   ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx "
-                                   "button_button_size_large__G21Vg']").text
-        driver.quit()
+        driver.find_element(*TestLocators.INPUT_EMAIL).send_keys(data.user_data['email'])
+        driver.find_element(*TestLocators.INPUT_PASSWORD).send_keys(data.user_data['password'])
+        driver.find_element(*TestLocators.BUTTON_SIGN_IN).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located(TestLocators.BUTTON_MAKE_AN_ORDER))
+        text = driver.find_element(*TestLocators.BUTTON_MAKE_AN_ORDER).text
         assert text == "Оформить заказ"
 
-    def test_auth_via_form_restore_password(self):
-        driver = webdriver.Chrome()
-        driver.get("https://stellarburgers.nomoreparties.site/")
-        # Перейти к авторизации
-        driver.find_element(By.XPATH, ".//a[@href='/account']").click()
+    def test_auth_via_form_restore_password(self, driver):
+        driver.get("https://stellarburgers.nomoreparties.site/login")
         # Перейти к форме восстановления пароля
-        driver.find_element(By.XPATH, ".//a[@href='/forgot-password']").click()
-        driver.find_element(By.XPATH, ".//a[@href='/login']").click()
+        driver.find_element(*TestLocators.BUTTON_FORGOT_PASSWORD).click()
+        driver.find_element(*TestLocators.BUTTON_SIGN_IN).click()
         # Заполнить поля для авторизации
-        driver.find_element(By.XPATH, ".//label[text()='Email']/parent::div/input").send_keys("koksharov_9555@mail.ru")
-        driver.find_element(By.XPATH, ".//input[@name='Пароль']").send_keys("123123")
-        driver.find_element(By.XPATH, ".//button[text()='Войти']").click()
-        WebDriverWait(driver, 3).until(
-            expected_conditions.presence_of_element_located((By.XPATH,
-                                                             ".//button[@class='button_button__33qZ0 "
-                                                             "button_button_type_primary__1O7Bx "
-                                                             "button_button_size_large__G21Vg']")))
-        text = driver.find_element(By.XPATH,
-                                   ".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx "
-                                   "button_button_size_large__G21Vg']").text
-        driver.quit()
+        driver.find_element(*TestLocators.INPUT_EMAIL).send_keys(data.user_data['email'])
+        driver.find_element(*TestLocators.INPUT_PASSWORD).send_keys(data.user_data['password'])
+        driver.find_element(*TestLocators.BUTTON_SIGN_IN).click()
+        WebDriverWait(driver, 3).until(EC.presence_of_element_located(TestLocators.BUTTON_MAKE_AN_ORDER))
+        text = driver.find_element(*TestLocators.BUTTON_MAKE_AN_ORDER).text
         assert text == "Оформить заказ"
