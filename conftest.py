@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 @pytest.fixture(scope='function')
 def driver():
     options = webdriver.ChromeOptions()
-    service = Service(executable_path="/Users/vovak/chromedriver/chromedriver-win64/chromedriver.exe")
+    service = Service(executable_path="driver/chromedriver.exe")
     options.add_argument('--window-size=1920,1080')
     driver = webdriver.Chrome(service=service, options=options)
     yield driver
