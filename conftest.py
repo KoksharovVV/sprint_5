@@ -1,5 +1,4 @@
 import pytest
-import json
 import random
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -16,15 +15,8 @@ def driver():
 
 
 @pytest.fixture(scope='session')
-def data():
-    user = {}
-    user["login"] = f'namesername{random.randint(0, 9)}{random.randint(0, 999)}@yandex.ru'
-    user["password"] = str(random.randint(100000, 999999))
-    with open('random_login_details.json', 'w') as file:
-        json.dump(user, file)
-    with open('random_login_details.json', 'r') as file:
-        user = json.load(file)
-        data = {"login": user["login"],
-                "password": user["password"]}
-    return data
-
+def random_user():
+    random_user = {}
+    random_user["login"] = f'namesername{random.randint(0, 9)}{random.randint(0, 999)}@yandex.ru'
+    random_user["password"] = str(random.randint(100000, 999999))
+    return random_user
